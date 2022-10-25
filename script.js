@@ -1,64 +1,46 @@
 const campo = document.forms.tarefa.campo;
 const btnAdd = document.forms.tarefa.adicionar;
-const lista = document.querySelector('.lista');
-
-function criarElemento(tag, texto) {
-  const elemento = document.createElement(tag);
-  if (texto) 
-    elemento.innerText = texto;
-  return elemento;
-}
-
-function criarTarefa(textoTarefa) {
-  const li = criarElemento('li');
-  const btnApagar = criarElemento('button', 'apagar');
-  const btnEditar = criarElemento('button', 'editar')
-  btnEditar.addEventListener('click', editarTarefa);
-  btnApagar.addEventListener('click', apagarTarefa);
-  li.appendChild(criarElemento('span', textoTarefa));
-  li.appendChild(btnEditar);
-  li.appendChild(btnApagar);
-  li.addEventListener('click', marcarTarefaFeita);
-  return li;
-}
-
-function verificarSeTarefaExiste(textoTarefa) {
-  for(let i = 0; i < lista.childNodes.length; i++) {
-    if (lista.childNodes[i].children[0].innerText === textoTarefa)
-      return true;
-  }
-}
+const tarefas = document.querySelector('.tarefas');
 
 function adicionarTarefa(event) {
   event.preventDefault();
-  if (campo.value !== '' && !verificarSeTarefaExiste(campo.value))
-  lista.appendChild(criarTarefa(campo.value));
+  const contemTarefa = Array.from(tarefas.children).some(li => li.firstChild.innerText === campo.value);
+  if (campo.value !== '' && !contemTarefa) {
+    let tarefa = document.createElement('li');
+    tarefa.innerHTML = `<span>${campo.value}</span>
+                        <div>
+                          <button class="editar"><img src="./icone-editar.png"></button>
+                          <button class="apagar"><img src="./icone-lixeira.png"></button>
+                        </div>`;
+    tarefa.addEventListener('click', marcarTarefaFeita)
+    tarefa.querySelector('.editar').addEventListener('click', editarTarefa);
+    tarefa.querySelector('.apagar').addEventListener('click', () => tarefas.removeChild(tarefa));
+    tarefas.appendChild(tarefa);
+  }
   campo.value = '';
   campo.focus();
 }
 
 function editarTarefa(event) {
-  const li = event.target.parentElement;
-  if (event.target.innerText === 'editar') {
-    event.target.innerText = 'salvar';
-    const spanTarefa = event.target.parentElement.firstChild;
-    const inputEdicao = criarElemento('input');
+  if (event.target instanceof HTMLImageElement) var btnEditar = event.target.parentElement;
+  else var btnEditar = event.target;
+
+  const li = btnEditar.parentElement.parentElement;
+  if (!btnEditar.classList.contains('ativo')) {
+    btnEditar.classList.add('ativo');
+    const spanTarefa = btnEditar.parentElement.parentElement.firstChild;
+    const inputEdicao = document.createElement('input');
     inputEdicao.value = spanTarefa.innerText;
     li.replaceChild(inputEdicao, spanTarefa);
     inputEdicao.focus();
   } else {
-    event.target.innerText = 'editar';
-    const inputEdicao = event.target.parentElement.firstChild;
-    const spanTarefa = criarElemento('span', inputEdicao.value)
+    btnEditar.classList.remove('ativo');
+    const inputEdicao = btnEditar.parentElement.parentElement.firstChild;
+    const spanTarefa = document.createElement('span');
+    spanTarefa.innerText = inputEdicao.value;
     li.replaceChild(spanTarefa, inputEdicao);
   }
 }
-
-function apagarTarefa(event) {
-  const tarefa = event.target.parentElement;
-  lista.removeChild(tarefa);
-}
-
 
 function marcarTarefaFeita(event) {
   if (event.target instanceof HTMLSpanElement)
@@ -69,6 +51,5 @@ function marcarTarefaFeita(event) {
   if (textoTarefa)
     textoTarefa.style.textDecoration = textoTarefa.style.textDecoration !== 'line-through' ? 'line-through' : 'none';
 }
-
 
 btnAdd.addEventListener('click', adicionarTarefa);
