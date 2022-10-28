@@ -3,8 +3,7 @@ const btnAdd = document.forms.tarefa.adicionar;
 const tarefas = document.querySelector('.tarefas');
 
 function adicionarTarefa(textoTarefa, feita) {
-  const contemTarefa = Array.from(tarefas.children).some(li => li.firstChild.innerText === textoTarefa);
-  if (textoTarefa !== '' && !contemTarefa) {
+  if (textoTarefa !== '') {
     let tarefa = document.createElement('li');
     tarefa.innerHTML = `<span>${textoTarefa}</span>
                         <div>
