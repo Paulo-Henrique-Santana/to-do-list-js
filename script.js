@@ -31,7 +31,7 @@ function editarTarefa(event) {
     btnEditar.classList.add('ativo');
     const spanTarefa = btnEditar.parentElement.parentElement.firstChild;
     const inputEdicao = document.createElement('input');
-    inputEdicao.setAttribute('maxlength', 50);
+    inputEdicao.setAttribute('maxlength', 54);
     inputEdicao.value = spanTarefa.innerText;
     li.replaceChild(inputEdicao, spanTarefa);
     inputEdicao.focus();

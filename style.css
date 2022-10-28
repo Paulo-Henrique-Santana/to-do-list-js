@@ -20,8 +20,8 @@ button {
 }
 
 .principal {
-  margin-top: 100px;
-  max-width: 575px;
+  margin: 100px 20px 0 20px;
+  width: 575px;
 }
 
 .principal h1 {
@@ -31,17 +31,21 @@ button {
   color: white;
 }
 
+form {
+  display: grid;
+  grid-template-columns: 1fr 50px;
+}
+
 form .campo {
-  width: 500px;
   height: 40px;
+  margin-right: 10px;
   border: none;
   border-radius: 4px;
   font-size: 1.2rem;
-  padding: 0 5px;
+  padding: 0 7px;
 }
 
 form .adicionar {
-  width: 50px;
   height: 40px;
   background-color: #4361EE;
   border: none;
@@ -56,10 +60,9 @@ form .adicionar {
 }
 
 .tarefas li {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr max-content;
 
-  max-width: 555px;
   margin-bottom: 5px;
   list-style: none;
   background-color: white;
@@ -69,17 +72,20 @@ form .adicionar {
 
 .tarefas li span {
   align-self: center;
-  padding: 0 5px;
-  max-width: 460px;
   font-size: 1.2rem;
+  padding-left: 5px;
+  overflow-x: auto;
 }
 
 .tarefas li input {
   align-self: center;
-  padding: 0 5px;
-  width: 350px;
+  padding-left: 5px;
   height: 35px;
   font-size: 1.2rem;
+}
+
+.tarefas li div {
+  margin-left: 5px;
 }
 
 .tarefas li button{
@@ -100,3 +106,4 @@ form .adicionar {
 .tarefas li .apagar {
   background-color: #ff595e;
 }
+
