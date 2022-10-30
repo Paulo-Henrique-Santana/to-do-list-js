@@ -61,13 +61,18 @@ form .adicionar {
 
 .tarefas li {
   display: grid;
-  grid-template-columns: 1fr max-content;
+  grid-template-columns: 1fr max-content max-content;
 
   margin-bottom: 5px;
   list-style: none;
   background-color: white;
   border-radius: 5px;
   padding: 5px;
+}
+
+.tarefas li.feita {
+  text-decoration: line-through;
+  filter: brightness(85%);
 }
 
 .tarefas li span {
@@ -93,6 +98,7 @@ form .adicionar {
   width: 35px;
   height: 35px;
   border-radius: 4px;
+  margin-left: 5px;
 }
 
 .tarefas li button img{
