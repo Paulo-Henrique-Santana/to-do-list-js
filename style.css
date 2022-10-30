@@ -19,6 +19,10 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  filter: brightness(97.5%);
+}
+
 .principal {
   margin: 100px 20px 0 20px;
   width: 575px;
@@ -43,6 +47,11 @@ form .campo {
   border-radius: 4px;
   font-size: 1.2rem;
   padding: 0 7px;
+  outline: none;
+}
+
+form .campo:focus {
+  border: 2px solid #4361EE;
 }
 
 form .adicionar {
@@ -107,6 +116,11 @@ form .adicionar {
 
 .tarefas li .editar {
   background-color: #ffca3a;
+}
+
+.tarefas li .editar.ativo {
+  background-color: white;
+  border: 2px solid #ffca3a;
 }
 
 .tarefas li .apagar {

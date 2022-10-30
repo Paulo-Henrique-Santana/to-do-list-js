@@ -6,17 +6,17 @@ const adicionarTarefa = (textoTarefa, feita) => {
   if (textoTarefa !== '') {
     let tarefa = document.createElement('li');
     tarefa.innerHTML = `<span>${textoTarefa}</span>
-                        <button class="editar"><img src="./icone-editar.png"></button>
+                        <button class="editar"><img src="./icone-editar-branco.png"></button>
                         <button class="apagar"><img src="./icone-lixeira.png"></button>`;
     tarefa.addEventListener('click', (event) => marcarTarefaFeita(event, tarefa));
     if (feita) tarefa.classList.add('feita');
     tarefa.querySelector('.editar').addEventListener('click', () => editarTarefa(tarefa));
     tarefa.querySelector('.apagar').addEventListener('click', () => removeTarefa(tarefa));
     tarefas.appendChild(tarefa);
+    salvarTarefas();
   }
   campo.value = '';
   campo.focus();
-  salvarTarefas();
 }
 
 const editarTarefa = (tarefa) => {
@@ -24,6 +24,7 @@ const editarTarefa = (tarefa) => {
 
   if (!btnEditar.classList.contains('ativo')) {
     btnEditar.classList.add('ativo');
+    btnEditar.firstChild.setAttribute('src', './icone-editar-amarelo.png');
     const spanTarefa = btnEditar.parentElement.firstChild;
     const inputEdicao = document.createElement('input');
     inputEdicao.setAttribute('maxlength', 54);
@@ -32,6 +33,7 @@ const editarTarefa = (tarefa) => {
     inputEdicao.focus();
   } else {
     btnEditar.classList.remove('ativo');
+    btnEditar.firstChild.setAttribute('src', './icone-editar-branco.png');
     const inputEdicao = btnEditar.parentElement.firstChild;
     const spanTarefa = document.createElement('span');
     spanTarefa.innerText = inputEdicao.value;
@@ -77,5 +79,5 @@ if (localStorage.tarefas) carregarTarefas();
 
 btnAdd.addEventListener('click', event => {
   event.preventDefault();
-  adicionarTarefa(campo.value)
+  adicionarTarefa(campo.value);
 });
