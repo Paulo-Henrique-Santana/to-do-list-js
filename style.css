@@ -181,3 +181,12 @@ form .adicionar {
 .paleta-cores .verde {
   background-color: #caffbf;
 }
+
+@media (pointer: coarse) {
+  button {
+    cursor: initial;
+  }
+  .tarefas li {
+    cursor: initial;
+  }
+}
