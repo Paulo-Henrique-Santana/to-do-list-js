@@ -2,16 +2,28 @@ const campo = document.forms.tarefa.campo;
 const btnAdd = document.forms.tarefa.adicionar;
 const tarefas = document.querySelector('.tarefas');
 
-const adicionarTarefa = (textoTarefa, feita) => {
+const adicionarTarefa = (textoTarefa, feita = false, cor) => {
   if (textoTarefa !== '') {
     let tarefa = document.createElement('li');
     tarefa.innerHTML = `<span>${textoTarefa}</span>
                         <button class="editar"><img src="./icone-editar-branco.png"></button>
-                        <button class="apagar"><img src="./icone-lixeira.png"></button>`;
+                        <button class="apagar"><img src="./icone-lixeira.png"></button>
+                        <div class="paleta-cores">
+                        <button class="branco" data-cor="ffffff"></button>
+                          <button class="azul" data-cor="a0c4ff"></button>
+                          <button class="amarelo" data-cor="fdffb6"></button>
+                          <button class="vermelho" data-cor="ffadad"></button>
+                          <button class="verde" data-cor="caffbf"></button>
+                        </div>`;
+    if (feita === true) tarefa.classList.add('feita');
+    if (cor) tarefa.style.backgroundColor = cor;
     tarefa.addEventListener('click', (event) => marcarTarefaFeita(event, tarefa));
-    if (feita) tarefa.classList.add('feita');
     tarefa.querySelector('.editar').addEventListener('click', () => editarTarefa(tarefa));
     tarefa.querySelector('.apagar').addEventListener('click', () => removeTarefa(tarefa));
+    const coresPaleta = tarefa.querySelectorAll('.paleta-cores button');
+    coresPaleta.forEach((botao) => {
+      botao.addEventListener('click', () => tarefa.style.backgroundColor = `#${botao.dataset.cor}`);
+    });
     tarefas.appendChild(tarefa);
     salvarTarefas();
   }
@@ -21,6 +33,7 @@ const adicionarTarefa = (textoTarefa, feita) => {
 
 const editarTarefa = (tarefa) => {
   const btnEditar = tarefa.children[1];
+  tarefa.querySelector('.paleta-cores').classList.toggle('ativo');
 
   if (!btnEditar.classList.contains('ativo')) {
     btnEditar.classList.add('ativo');
@@ -60,6 +73,8 @@ const salvarTarefas = () => {
     const tarefa = {
       texto: li.children[0].innerText,
     }
+    if (li.style.backgroundColor === '') tarefa.cor = 'rgb(255, 255, 255)';
+    else tarefa.cor =li.style.backgroundColor;
     if (li.classList.contains('feita')) tarefa.feita = true;
     else tarefa.feita = false;
     arrayTarefas.push(tarefa);
@@ -70,8 +85,7 @@ const salvarTarefas = () => {
 const carregarTarefas = () => {
   const arrayTarefas = JSON.parse(localStorage.tarefas);
   arrayTarefas.forEach(tarefa => {
-    if (tarefa.feita === true) adicionarTarefa(tarefa.texto, true);
-    else adicionarTarefa(tarefa.texto);
+    adicionarTarefa(tarefa.texto, tarefa.feita, tarefa.cor);
   })
 }
 
