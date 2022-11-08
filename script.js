@@ -38,15 +38,13 @@ const adicionarTarefa = (textoTarefa, feita = false, cor) => {
 }
 
 const subirTarefa = (tarefa) => {
-  if (tarefa.previousElementSibling) {
-    tarefas.insertBefore(tarefa, tarefa.previousElementSibling)
-  }
+  if (tarefa.previousElementSibling) tarefas.insertBefore(tarefa, tarefa.previousElementSibling)
+  salvarTarefas();
 }
 
 const descerTarefa = (tarefa) => {
-  if (tarefa.nextElementSibling) {
-    tarefas.insertBefore(tarefa.nextElementSibling, tarefa)
-  }
+  if (tarefa.nextElementSibling) tarefas.insertBefore(tarefa.nextElementSibling, tarefa)
+  salvarTarefas();
 }
 
 const editarTarefa = (tarefa) => {
@@ -86,16 +84,13 @@ const marcarTarefaFeita = (event, tarefa) => {
 }
 
 const salvarTarefas = () => {
-  arrayTarefas = [];
-  tarefas.childNodes.forEach(li => {
-    const tarefa = {
-      texto: li.children[0].innerText,
-    }
+  arrayTarefas = [...tarefas.children].map(li => {
+    const tarefa = { texto: li.querySelector('span').innerText };
     if (li.style.backgroundColor === '') tarefa.cor = 'rgb(255, 255, 255)';
-    else tarefa.cor =li.style.backgroundColor;
+    else tarefa.cor = li.style.backgroundColor;
     if (li.classList.contains('feita')) tarefa.feita = true;
     else tarefa.feita = false;
-    arrayTarefas.push(tarefa);
+    return tarefa;
   });
   localStorage.tarefas = JSON.stringify(arrayTarefas);
 }
