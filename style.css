@@ -71,7 +71,7 @@ form .adicionar {
 .tarefas li {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr max-content max-content;
+  grid-template-columns: max-content 1fr max-content max-content;
 
   margin-bottom: 5px;
   list-style: none;
@@ -81,25 +81,39 @@ form .adicionar {
   cursor: pointer;
 }
 
+.tarefas li .setas {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+  margin-right: 5px;
+}
+
+.tarefas li .setas img {
+  width: 15px;
+}
+
 .tarefas li span {
+  padding-left: 3px;
   align-self: center;
   font-size: 1.2rem;
-  padding-left: 5px;
   overflow-x: auto;
   user-select: none;
+  border: 2px solid transparent;
 }
 
 .tarefas li.feita span {
   text-decoration: line-through;
+  color: #797979;
 }
 
 .tarefas li input {
   align-self: center;
-  padding-left: 5px;
   height: 35px;
   font-size: 1.2rem;
   border: 2px solid black;
   border-radius: 5px;
+  padding-left: 3px;
   outline: none;
   text-decoration: none;
 }
