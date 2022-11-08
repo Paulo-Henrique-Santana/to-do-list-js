@@ -2,40 +2,48 @@ const campo = document.forms.tarefa.campo;
 const btnAdd = document.forms.tarefa.adicionar;
 const tarefas = document.querySelector('.tarefas');
 
-const adicionarTarefa = (textoTarefa, feita = false, cor) => {
+const criarTarefa = (textoTarefa, feita = false, cor) => {
   if (textoTarefa !== '') {
     let tarefa = document.createElement('li');
-    tarefa.innerHTML = `<div class='setas'>
-                          <img src='./seta-cima.png' class='seta-cima'>
-                          <img src='./seta-baixo.png' class='seta-baixo'>
-                        </div>
-                        <span>${textoTarefa}</span>
-                        <button class='editar'><img src='./icone-editar-branco.png'></button>
-                        <button class='apagar'><img src='./icone-lixeira.png'></button>
-                        <div class='paleta-cores'>
-                        <button class='branco' data-cor='ffffff'></button>
-                          <button class='azul' data-cor='a0c4ff'></button>
-                          <button class='amarelo' data-cor='fdffb6'></button>
-                          <button class='vermelho' data-cor='ffadad'></button>
-                          <button class='verde' data-cor='caffbf'></button>
-                        </div>`;
+    tarefa.innerHTML = `
+      <div class='setas'>
+        <img src='./seta-cima.png' class='seta-cima'>
+        <img src='./seta-baixo.png' class='seta-baixo'>
+      </div>
+      <span>${textoTarefa}</span>
+      <button class='editar'><img src='./icone-editar-branco.png'></button>
+      <button class='apagar'><img src='./icone-lixeira.png'></button>
+      <div class='paleta-cores'>
+        <button class='branco' data-cor='ffffff'></button>
+        <button class='azul' data-cor='a0c4ff'></button>
+        <button class='amarelo' data-cor='fdffb6'></button>
+        <button class='vermelho' data-cor='ffadad'></button>
+        <button class='verde' data-cor='caffbf'></button>
+      </div>`;
     if (feita === true) tarefa.classList.add('feita');
     if (cor) tarefa.style.backgroundColor = cor;
-    tarefa.addEventListener('click', (event) => marcarTarefaFeita(event, tarefa));
-    tarefa.querySelector('.seta-cima').addEventListener('click', () => subirTarefa(tarefa));
-    tarefa.querySelector('.seta-baixo').addEventListener('click', () => descerTarefa(tarefa));
-    tarefa.querySelector('.editar').addEventListener('click', () => editarTarefa(tarefa));
-    tarefa.querySelector('.apagar').addEventListener('click', () => removeTarefa(tarefa));
-    const coresPaleta = tarefa.querySelectorAll('.paleta-cores button');
-    coresPaleta.forEach((botao) => {
-      botao.addEventListener('click', () => tarefa.style.backgroundColor = `#${botao.dataset.cor}`);
-    });
+    addEventosTarefa(tarefa);
+    adicionarTarefa(tarefa);
+  }
+}
+
+const addEventosTarefa = (tarefa) => {
+  tarefa.addEventListener('click', (event) => marcarTarefaFeita(event, tarefa));
+  tarefa.querySelector('.seta-cima').addEventListener('click', () => subirTarefa(tarefa));
+  tarefa.querySelector('.seta-baixo').addEventListener('click', () => descerTarefa(tarefa));
+  tarefa.querySelector('.editar').addEventListener('click', () => editarTarefa(tarefa));
+  tarefa.querySelector('.apagar').addEventListener('click', () => removeTarefa(tarefa));
+  tarefa.querySelectorAll('.paleta-cores button').forEach((botao) => {
+    botao.addEventListener('click', () => tarefa.style.backgroundColor = `#${botao.dataset.cor}`);
+  });
+}
+  
+  const adicionarTarefa = (tarefa) => {
     tarefas.appendChild(tarefa);
     salvarTarefas();
+    campo.value = '';
+    campo.focus();
   }
-  campo.value = '';
-  campo.focus();
-}
 
 const subirTarefa = (tarefa) => {
   if (tarefa.previousElementSibling) tarefas.insertBefore(tarefa, tarefa.previousElementSibling)
@@ -97,14 +105,12 @@ const salvarTarefas = () => {
 
 const carregarTarefas = () => {
   const arrayTarefas = JSON.parse(localStorage.tarefas);
-  arrayTarefas.forEach(tarefa => {
-    adicionarTarefa(tarefa.texto, tarefa.feita, tarefa.cor);
-  })
+  arrayTarefas.forEach(tarefa => criarTarefa(tarefa.texto, tarefa.feita, tarefa.cor));
 }
 
 if (localStorage.tarefas) carregarTarefas();
 
 btnAdd.addEventListener('click', event => {
   event.preventDefault();
-  adicionarTarefa(campo.value);
+  criarTarefa(campo.value);
 });
