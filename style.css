@@ -153,6 +153,7 @@ form .adicionar {
   right: 0px;
   top: 50px;
   z-index: 2;
+  animation: exibir .3s;
 }
 
 .paleta-cores.ativo {
@@ -180,20 +181,53 @@ form .adicionar {
   margin: 0 2px;
 }
 
+.paleta-cores .branco {
+  background-color: #fff;
+  animation: exibirCor .2s;
+}
+
 .paleta-cores .azul {
   background-color: #a0c4ff;
+  animation: exibirCor .25s;
 }
 
 .paleta-cores .amarelo {
   background-color: #fdffb6;
+  animation: exibirCor .3s;
 }
 
 .paleta-cores .vermelho {
   background-color: #ffadad;
+  animation: exibirCor .35s;
 }
 
 .paleta-cores .verde {
   background-color: #caffbf;
+  animation: exibirCor .4s;
+}
+
+@keyframes exibir {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -10px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes exibirCor {
+  from {
+    display: none;
+    transform: translate3d(-5px, 0, 0);
+  }
+
+  to {
+    display: inline;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 @media (pointer: coarse) {
